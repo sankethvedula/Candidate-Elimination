@@ -3,64 +3,58 @@
  *
  *  Created on: 28-Aug-2015
  *      Authors: Sanketh Vedula
- *      		 Surya Teja Cheedella
+ *               Surya Teja Cheedella
  */
 
 #include<bits/stdc++.h>
 using namespace std;
 
-class Eliminator{
-	public:
-		void start(int M, string data[][50]){
-			initializeS(M);
-			initializeG(M);
-		}
+vector<string> specific;
+vector<string> general;
 
-		void initializeS(int M){
-			string specific[M];
-			fill_n(specific, M, "#");
+void Eliminator(vector<string> &data){
+    int M= data.size();
+    if(data[M-1]== "Yes"){
+        
+    }
+    else if(data[M-1]== "No"){
 
-//			for(int i= 0; i< M; i++)
-//				cout<< specific[i]<< " ";
-		}
-		void initializeG(int M){
-			string general[M];
-			fill_n(general, M, "?");
+    }
+    else{
+        cout<< "Incorrect data!";
+    }
 
-//			for(int i= 0; i< M; i++)
-//				cout<< general[i]<< " ";
-		}
-
-
-};
-
-int main(){
-	int N, M;
-	cin>> N>> M;
-
-	string attributes [M];
-	string a;
-	for(int i= 0; i<M; i++){
-		cin>> a;
-		attributes[i]= a;
-	}
-
-	string data[N][50];
-
-	for(int i= 0; i<N; i++){
-		for(int j= 0; j< M; j++){
-			cin>> a;
-			data[i][j]= a;
-		}
-	}
-
-
-	Eliminator elim;
-
-	elim.start(M, data);
-
-	return 0;
 }
 
 
+int main(){
+    int N, M;
+    cin>> N>> M;
 
+    vector<string> attributes;
+    vector<string> data;        //one instance
+    string a;
+
+
+    for(int i= 0; i<M; i++){
+        cin>> a;
+        attributes.push_back(a);
+        specific.push_back("#");
+        general.push_back("?");
+    }
+
+    for(int i= 0; i<N; i++){
+        data.clear();
+        for(int j= 0; j<M; j++){
+            cin>>a;
+            data.push_back(a);
+        }
+        Eliminator(data);      
+    }
+
+    // for(int i= 0; i<M; i++){
+    //     cout<< attributes[i]<< specific[i]<< general[i]<< data[i]<< endl;
+    // }
+
+    return 0;
+}
