@@ -15,6 +15,7 @@ vector<string> general;
 void Eliminator(vector<string> &data){
     int M= data.size();
     if(data[M-1]== "Yes"){
+    	
         
     }
     else if(data[M-1]== "No"){
