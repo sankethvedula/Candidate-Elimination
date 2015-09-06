@@ -1,0 +1,5 @@
+Compilation command:
+
+$g++ candidate_elimination.cpp
+
+$./a.out
