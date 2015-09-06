@@ -5,7 +5,35 @@ Humidity Normal High
 Wind Strong Weak
 Water Warm Cool
 Forecast Same Change
-EnjoySport Yes No
+EnjoySport No Yes
+Sunny Warm Normal Strong Warm Same Yes
+Sunny Warm High Strong Warm Same Yes
+Rainy Cold High Strong Warm Change No
+Sunny Warm High Strong Cool Change Yes
+
+6 4
+3
+Sunny
+Rainy
+Cloudy
+2
+Warm
+Cold
+2
+Normal
+High
+2
+Strong
+Weak
+2
+Warm
+Cool
+2
+Same
+Change
+2
+Yes
+No
 Sunny Warm Normal Strong Warm Same Yes
 Sunny Warm High Strong Warm Same Yes
 Rainy Cold High Strong Warm Change No
@@ -25,6 +53,9 @@ DIP
 2
 ADULT
 CHILD
+2
+T
+F
 YELLOW SMALL STRETCH ADULT T
 YELLOW SMALL STRETCH CHILD T
 YELLOW SMALL DIP ADULT T

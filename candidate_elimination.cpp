@@ -30,7 +30,7 @@ using namespace std;
 int main()
 {
   int numberFeatures; //number of features in the dataset
-  int trainingExamples;
+  int trainingExamples, temp_int;
   string data;
   bool consistent;
 
@@ -54,8 +54,13 @@ int main()
     }
   }
   
-  instance[numberFeatures]["F"] = 0;
-  instance[numberFeatures]["T"] = 1;
+  cin>> temp_int;
+  string temp;
+  cin>> temp;
+  instance[numberFeatures][temp] = 1;
+  cin>> temp;
+  instance[numberFeatures][temp] = 0;
+  
   /*
   for any feature if attribute=0 -> null value;
   attribute = INT_MAX -> all
@@ -82,10 +87,14 @@ int main()
 
   //input the training data 
   //while( getline(cin, data) )
-  for (int k = 0 ; k <=trainingExamples; k++)  
-  {
-    getline(cin,data);
+  for (int k = 0 ; k <trainingExamples; k++)  
+  { 
     cout << "\nTaking one example...\n";
+    getline(cin,data);
+    if(data.size()<1){
+      getline(cin, data);
+    }
+    
     if(data.size()==0)
     {
       continue;
