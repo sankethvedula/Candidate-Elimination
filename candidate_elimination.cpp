@@ -27,285 +27,294 @@ typedef long long ll;
 
 using namespace std;
 
-int main()
-{
-  int numberFeatures; //number of features in the dataset
-  int trainingExamples;
-  string data;
-  bool consistent;
+int main(){
+    int trainingExamples, numberFeatures; //number of features in the dataset
+    int gaps, z;
+    //int trainingExamples;
+    string data, temp;
+    bool consistent;
 
-  cout << "Enter number of features:\n";
-  cin >> numberFeatures; //input the number of features
-  cin >> trainingExamples;
+    cout << "Enter data:\n";
+    cin >>trainingExamples >> numberFeatures;
 
-  vector <int> numberAttributes(numberFeatures); //number of attributes for each feature.
-  map <string, int> instance[numberFeatures+1];
-  
-  for(int i=0; i<numberFeatures; i++)
-  {
-    //cout << "Enter the number of attributes: \n";
-    cin >> numberAttributes[i];
-
-    for(int j=1; j<=numberAttributes[i]; j++)
-    {
-      string temp;
-      cin>> temp;
-      instance[i][temp] = j; //map attribute name with number
-    }
-  }
-  
-  instance[numberFeatures]["F"] = 0;
-  instance[numberFeatures]["T"] = 1;
-  /*
-  for any feature if attribute=0 -> null value;
-  attribute = INT_MAX -> all
-  */
-  
-  vector <int> currdata(numberFeatures+1), tmpData(numberFeatures);
-
-  //set used to represent the generic and specific boundaries.
-  set < vector<int> > specific, generic;
-
-  //initialization
-  for(int i=0; i<numberFeatures; i++)
-  {
-    tmpData[i]=0;
-  }
-  specific.insert(tmpData);
-
-  for(int i=0; i<numberFeatures; i++)
-  {
-    tmpData[i]=INT_MAX;
-  }
-  cout << INT_MAX;
-  generic.insert(tmpData);
-
-  //input the training data 
-  //while( getline(cin, data) )
-  for (int k = 0 ; k <=trainingExamples; k++)  
-  {
-    getline(cin,data);
-    cout << "\nTaking one example...\n";
-    if(data.size()==0)
-    {
-      continue;
-    }
-/*
-PURPLE,SMALL,STRETCH,ADULT,T
-PURPLE,SMALL,STRETCH,CHILD,T
-PURPLE,SMALL,DIP,ADULT,T
-PURPLE,SMALL,DIP,CHILD,F
-PURPLE,SMALL,DIP,CHILD,F
-PURPLE,LARGE,STRETCH,ADULT,T
-PURPLE,LARGE,STRETCH,CHILD,T
-PURPLE,LARGE,DIP,ADULT,T
-PURPLE,LARGE,DIP,CHILD,F
-PURPLE,LARGE,DIP,CHILD,F
-*/
-    string temp;
-    int st = 0, count = 0;
-    int len = data.size();
-
-    for( int i=0; i<len; i++ )
-    {
-      if(data[i]==' '|| i==len-1)
-      {
-        if(i==len-1)
-          temp = data.substr(st, i-st+1);
-        else
-          temp = data.substr(st, i-st);
-
-        currdata[count] = instance[count][temp];
-        count++;
-        st = i+1;
-      }
-    }
-
-    vector<int> m, n, p;
+    vector <int> numberAttributes(numberFeatures); //number of attributes for each feature.
+    map <string, int> instance[numberFeatures];
     
-    if( currdata[count-1]==1 ) //if positive example
-    {
-      //remove inconsistent hypotheses from generic border
-      set < vector<int> > tempg, temps;
-      tempg = generic;
-      for(set<vector<int> >::iterator it= generic.begin(); it!=generic.end(); it++)
-      {
-        m = *it;
-        int er =0;
-        for(int i=0; i<numberFeatures; i++)
-        {
-          if(m[i]!=currdata[i] && m[i]!=INT_MAX )
-          {
-            er = 1;
-            break;
-          }
-        }
-        if(er==1)
-          tempg.erase(m);
-      }
-      generic = tempg;
+    // for(int i=0; i<numberFeatures; i++)
+    // {
+    //   //cout << "Enter the number of attributes: \n";
+    //   cin >> numberAttributes[i];
 
-      m = *(specific.begin());
-      n = *(specific.begin());
-      specific.erase(n);
+    //   for(int j=1; j<=numberAttributes[i]; j++)
+    //   {
+    //     string temp;
+    //     cin>> temp;
+    //     instance[i][temp] = j; //map attribute name with number
+    //   }
+    // }
+    
+    // instance[numberFeatures-1]["F"] = 0;
+    // instance[numberFeatures-1]["T"] = 1;
 
-      for(int i=0; i<numberFeatures; i++)
-      {
-        if(m[i]==0)
-        {
-          m[i] = currdata[i];
-        }
-        else if(m[i]!=currdata[i])
-        {
-          m[i]=INT_MAX;
-        }
-      }
+    for(int i= 0; i<numberFeatures-1; i++){
+        string featureData;
+        getline(cin, featureData);
 
-      specific.insert(m);
+        gaps= 0;
+        for(int j= 0; j<featureData.size()- 1; j++){
+            if(featureData[i]== ' '){
+                gaps+= 1;
+            }
+        }
+        numberAttributes[i]= gaps;
+
+
+        int st = 0, count = 0;
+        z= 0;
+        for( int k=0; k<featureData.size(); k++ )
+        {
+            if(featureData[k]==' '|| k==featureData.size()-1)
+            {
+                if(k==featureData.size()-1)
+                    temp = featureData.substr(st, k-st+1);
+                else
+                    temp = featureData.substr(st, k-st);
+
+                instance[i][temp]= z;
+                count++;
+                st = i+1;
+                z++;
+            }
+        }
+
     }
-    else //if negative example
+    string ttemp;
+    cin>> ttemp;
+    cin>> ttemp;
+    instance[numberFeatures-1][ttemp] = 1;
+    cin>> ttemp;
+    instance[numberFeatures-1][ttemp] = 0;
+
+
+
+    /*
+    for any feature if attribute=0 -> null value;
+    attribute = INT_MAX -> all
+    */
+    
+    vector <int> currdata(numberFeatures+1), tmpData(numberFeatures);
+
+    //set used to represent the generic and specific boundaries.
+    set < vector<int> > specific, generic;
+
+    //initialization
+    for(int i=0; i<numberFeatures; i++)
     {
-      /*
-      if example is inconsistent with spec border, then it is noise
-      */
+      tmpData[i]=0;
+    }
+    specific.insert(tmpData);
 
-      set < vector<int> > tempg, temps;
-      n = *(specific.begin());
+    for(int i=0; i<numberFeatures; i++)
+    {
+      tmpData[i]=INT_MAX;
+    }
+    cout << INT_MAX;
+    generic.insert(tmpData);
 
-      for(set< vector<int> >::iterator it= generic.begin(); it!=generic.end(); it++)
+    //input the training data 
+    //while( getline(cin, data) )
+    for (int k = 0 ; k <=trainingExamples; k++)  
+    {
+      getline(cin,data);
+      cout << "\nTaking one example...\n";
+      if(data.size()==0)
       {
-        m = *it;
-        cout << "Checking if the example is consistent with the present hypothesis\n";
+        continue;
+      }
+      string temp;
+      int st = 0, count = 0;
+      int len = data.size();
 
-        int er=0;
-        //check if given example is consistent with the present hypothesis
-        for(int i=0; i<numberFeatures; i++)
+      for( int i=0; i<len; i++ )
+      {
+        if(data[i]==' '|| i==len-1)
         {
-          if( m[i]!=INT_MAX && m[i]!=currdata[i])
-          {
-            er=1; //curr hyp is consistent
-            break;
-          }
-        }
+          if(i==len-1)
+            temp = data.substr(st, i-st+1);
+          else
+            temp = data.substr(st, i-st);
 
-        if(er==1)//if hyp is consistent with the example
-        {
-          tempg.insert(m);
+          currdata[count] = instance[count][temp];
+          count++;
+          st = i+1;
         }
-        else//hyp is not consistent with the example
+      }
+
+      vector<int> m, n, p;
+      
+      if( currdata[count-1]==1 ) //if positive example
+      {
+        //remove inconsistent hypotheses from generic border
+        set < vector<int> > tempg, temps;
+        tempg = generic;
+        for(set<vector<int> >::iterator it= generic.begin(); it!=generic.end(); it++)
         {
-          vector<int> temphyp;
+          m = *it;
+          int er =0;
           for(int i=0; i<numberFeatures; i++)
           {
-            if( m[i]==INT_MAX )
+            if(m[i]!=currdata[i] && m[i]!=INT_MAX )
             {
-                temphyp = m;
-                for(int j=1; j<=numberAttributes[i]; j++)//values are 1-based
-                {
-                  if(j==currdata[i])
-                    continue;
-                  else
-                  {
-                    temphyp[i] = j;
-                    
-                    //check if temphyp is more general than specifc hyp.
-                    consistent = true;
-                    for(int k=0; k<numberFeatures; k++)
-                    {
-                      if(temphyp[k]!=INT_MAX && temphyp[k]!=n[k] && n[k]!=0)
-                      {
-                        consistent = false;
-                        break;
-                      }
-                    }
-                    if(consistent)
-                      tempg.insert(temphyp); // new hypo is consistent
-                  }
-
-              }
-            }
-          }
-          
-        }
-
-      }
-      //cout << "Exited from the for loop\n";
-      generic.clear();
-      bool mGen;
-      set<vector<int> > tempgg;
-      
-      //remove from generic any hyp that is more specific than another hyp in generic
-      for(set< vector<int> >::iterator it= tempg.begin(); it!=tempg.end(); it++)
-      {
-        m = *it;
-
-        for( set< vector<int> >::iterator jt= tempg.begin(); jt!=tempg.end(); jt++ )
-        {
-          if(it==jt)
-            continue;
-
-          p = *jt;
-          consistent = true;
-          for(int k=0; k<numberFeatures; k++)
-          {
-            if(m[k]!=INT_MAX && m[k]!=p[k])
-            {
-              consistent = false;
+              er = 1;
               break;
             }
           }
-          if(consistent)
-            tempgg.insert(p);
+          if(er==1)
+            tempg.erase(m);
         }
-      }
+        generic = tempg;
 
-      //cout << "Compared hypothesis in generic space \n";
+        m = *(specific.begin());
+        n = *(specific.begin());
+        specific.erase(n);
 
-      // generic = set_difference(tempg, tempgg );
-      for( set< vector<int> >::iterator it= tempg.begin(); it!=tempg.end(); it++ )
-      {
-        m = *it;
-        //cout << "Last for loop .., \n";
-        if(tempgg.find(m)==tempgg.end())
+        for(int i=0; i<numberFeatures; i++)
         {
-          generic.insert(m);
-          //cout << "Entered if in teh for loop\n";
+          if(m[i]==0)
+          {
+            m[i] = currdata[i];
+          }
+          else if(m[i]!=currdata[i])
+          {
+            m[i]=INT_MAX;
+          }
+        }
+
+        specific.insert(m);
+      }
+      else //if negative example
+      {
+        /*
+        if example is inconsistent with spec border, then it is noise
+        */
+
+        set < vector<int> > tempg, temps;
+        n = *(specific.begin());
+
+        for(set< vector<int> >::iterator it= generic.begin(); it!=generic.end(); it++)
+        {
+          m = *it;
+          cout << "Checking if the example is consistent with the present hypothesis\n";
+
+          int er=0;
+          //check if given example is consistent with the present hypothesis
+          for(int i=0; i<numberFeatures; i++)
+          {
+            if( m[i]!=INT_MAX && m[i]!=currdata[i])
+            {
+              er=1; //curr hyp is consistent
+              break;
+            }
+          }
+
+          if(er==1)//if hyp is consistent with the example
+          {
+            tempg.insert(m);
+          }
+          else//hyp is not consistent with the example
+          {
+            vector<int> temphyp;
+            for(int i=0; i<numberFeatures; i++)
+            {
+              if( m[i]==INT_MAX )
+              {
+                  temphyp = m;
+                  for(int j=1; j<=numberAttributes[i]; j++)//values are 1-based
+                  {
+                    if(j==currdata[i])
+                      continue;
+                    else
+                    {
+                      temphyp[i] = j;
+                      
+                      //check if temphyp is more general than specifc hyp.
+                      consistent = true;
+                      for(int k=0; k<numberFeatures; k++)
+                      {
+                        if(temphyp[k]!=INT_MAX && temphyp[k]!=n[k] && n[k]!=0)
+                        {
+                          consistent = false;
+                          break;
+                        }
+                      }
+                      if(consistent)
+                        tempg.insert(temphyp); // new hypo is consistent
+                    }
+
+                }
+              }
+            }
+            
+          }
+
+        }
+        //cout << "Exited from the for loop\n";
+        generic.clear();
+        bool mGen;
+        set<vector<int> > tempgg;
+        
+        //remove from generic any hyp that is more specific than another hyp in generic
+        for(set< vector<int> >::iterator it= tempg.begin(); it!=tempg.end(); it++)
+        {
+          m = *it;
+
+          for( set< vector<int> >::iterator jt= tempg.begin(); jt!=tempg.end(); jt++ )
+          {
+            if(it==jt)
+              continue;
+
+            p = *jt;
+            consistent = true;
+            for(int k=0; k<numberFeatures; k++)
+            {
+              if(m[k]!=INT_MAX && m[k]!=p[k])
+              {
+                consistent = false;
+                break;
+              }
+            }
+            if(consistent)
+              tempgg.insert(p);
+          }
+        }
+
+        //cout << "Compared hypothesis in generic space \n";
+
+        // generic = set_difference(tempg, tempgg );
+        for( set< vector<int> >::iterator it= tempg.begin(); it!=tempg.end(); it++ )
+        {
+          m = *it;
+          //cout << "Last for loop .., \n";
+          if(tempgg.find(m)==tempgg.end())
+          {
+            generic.insert(m);
+            //cout << "Entered if in teh for loop\n";
+          }
         }
       }
+      //cout << "Hello world\n";
     }
-    //cout << "Hello world\n";
-  }
 
-  /*
-      Printing Specific and General borders
-  */
-      cout << "Ready to print....\n";
-  vector<int> abc;
+    /*
+        Printing Specific and General borders
+    */
+        cout << "Ready to print....\n";
+    vector<int> abc;
 
-  cout<<"specific border"<<endl;
-  abc = *(specific.begin());
-  cout<<"< ";
-  for(int i=0; i<numberFeatures; i++)
-  {
-    if( abc[i]==INT_MAX )
-      cout<<"?"<<" ";
-    else
-    {
-      for(map<string,int>::iterator jt = instance[i].begin(); jt!=instance[i].end();jt++)
-      {
-        if((*jt).second == abc[i])
-          cout<<(*jt).first<<" ";
-      }
-    }
-  }
-  cout<<">\n";
-
-  cout<<"\ngeneric border"<<endl;
-  for(set< vector<int> >::iterator it= generic.begin(); it!=generic.end(); it++)
-  {
-    abc = *it;
+    cout<<"specific border"<<endl;
+    abc = *(specific.begin());
     cout<<"< ";
-    for(int i=0; i< numberFeatures; i++)
+    for(int i=0; i<numberFeatures; i++)
     {
       if( abc[i]==INT_MAX )
         cout<<"?"<<" ";
@@ -319,11 +328,27 @@ PURPLE,LARGE,DIP,CHILD,F
       }
     }
     cout<<">\n";
-  }
-  
-  cout<<"\ncandidate elem done! :)\n";
 
-  return 0;
+    cout<<"\ngeneric border"<<endl;
+    for(set< vector<int> >::iterator it= generic.begin(); it!=generic.end(); it++){
+        abc = *it;
+        cout<<"< ";
+        for(int i=0; i< numberFeatures; i++){
+            if( abc[i]==INT_MAX )
+                cout<<"?"<<" ";
+            else{
+                for(map<string,int>::iterator jt = instance[i].begin(); jt!=instance[i].end();jt++){
+                    if((*jt).second == abc[i])
+                        cout<<(*jt).first<<" ";
+                }
+            }
+        }
+        cout<<">\n";
+    }
+    
+    cout<<"\ncandidate elem done! :)\n";
+
+    return 0;
 }
 
 
